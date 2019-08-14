@@ -23,6 +23,7 @@ namespace AspNetCoreRateLimit
             // on startup, save the IP rules defined in appsettings
             if (_options != null && _policies?.ClientRules != null)
             {
+
                 foreach (var rule in _policies.ClientRules)
                 {
                     await SetAsync($"{_options.ClientPolicyPrefix}_{rule.ClientId}", new ClientRateLimitPolicy { ClientId = rule.ClientId, Rules = rule.Rules }).ConfigureAwait(false);
