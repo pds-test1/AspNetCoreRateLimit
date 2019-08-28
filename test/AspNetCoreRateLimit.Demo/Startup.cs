@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace AspNetCoreRateLimit.Demo
 {
@@ -41,11 +40,7 @@ namespace AspNetCoreRateLimit.Demo
             var opt = new ClientRateLimitOptions();
             Configuration.GetSection("ClientRateLimiting").Bind(opt);
 
-            services.AddMvc((options) => 
-            {
-                options.EnableEndpointRouting = false;
-
-            }).AddNewtonsoftJson();
+            services.AddMvcCore((options) => { options.EnableEndpointRouting = false; });
 
             // https://github.com/aspnet/Hosting/issues/793
             // the IHttpContextAccessor service is not registered by default.
@@ -57,7 +52,7 @@ namespace AspNetCoreRateLimit.Demo
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseBlockingDetection();
 
